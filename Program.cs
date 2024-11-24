@@ -29,10 +29,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.UseRouting();
 
 app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
