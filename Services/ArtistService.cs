@@ -5,20 +5,13 @@ using MusicApp.Services.Interfaces;
 
 namespace MusicApp.Services;
 
-public class ArtistService : IArtistService
+public class ArtistService(IArtistRepository artistRepository) : IArtistService
 {
 
-    private readonly IArtistRepository _artistRepository;
-
-    public ArtistService(IArtistRepository artistRepository)
-    {
-        _artistRepository = artistRepository;
-    }
-    
     public async Task<Response<List<Artist>>> GetAllArtistsAsync()
     {
         var response = new Response<List<Artist>>();
-        var artists = await _artistRepository.GetAllArtistsAsync();
+        var artists = await artistRepository.GetAllArtistsAsync();
         
         response.Data = artists;
 
@@ -28,7 +21,7 @@ public class ArtistService : IArtistService
     public  async Task<Response<Artist>> GetArtistByIdAsync(int id)
     {
         var response = new Response<Artist>();
-        var artist = await _artistRepository.GetArtistByIdAsync(id);
+        var artist = await artistRepository.GetArtistByIdAsync(id);
 
         if (artist == null) 
         {
@@ -50,7 +43,7 @@ public class ArtistService : IArtistService
             Country = artistRequest.Country,
         };
         
-        var createdArtist = await _artistRepository.CreateArtistAsync(artist);
+        var createdArtist = await artistRepository.CreateArtistAsync(artist);
         response.Data = createdArtist;
         return response;
     }
@@ -58,7 +51,7 @@ public class ArtistService : IArtistService
     public async Task<Response<Artist>> UpdateArtistAsync(int id, ArtistRequest artistRequest)
     {
         var response = new Response<Artist>();
-        var artist = await _artistRepository.GetArtistByIdAsync(id);
+        var artist = await artistRepository.GetArtistByIdAsync(id);
 
         if (artist == null) {
             response.Success = false;
@@ -70,7 +63,7 @@ public class ArtistService : IArtistService
         artist.Genre = artistRequest.Genre;
         artist.Country = artistRequest.Country;
         
-        var updatedArtist = await _artistRepository.UpdateArtistAsync(artist);
+        var updatedArtist = await artistRepository.UpdateArtistAsync(artist);
         response.Data = updatedArtist;
         return response;
     }
@@ -78,7 +71,7 @@ public class ArtistService : IArtistService
     public async Task<Response<bool>> DeleteArtistAsync(int id)
     {
         var response = new Response<bool>();
-        var deleted = await _artistRepository.DeleteArtistAsync(id);
+        var deleted = await artistRepository.DeleteArtistAsync(id);
         response.Data = deleted;
         return response;
     }
